@@ -1,17 +1,18 @@
 package com.proyectoventa.softcaribbean.dto;
 
 public class Vendedor {
-    private String nmvendedor;
+    private int nmvendedor;
     private String documento;
     private String dsnombres;
     private String desapellidos;
     private String dsdireccion;
 
-    public String getNmvendedor() {
+
+    public int getNmvendedor() {
         return nmvendedor;
     }
 
-    public void setNmvendedor(String nmvendedor) {
+    public void setNmvendedor(int nmvendedor) {
         this.nmvendedor = nmvendedor;
     }
 

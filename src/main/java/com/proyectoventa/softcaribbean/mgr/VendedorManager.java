@@ -29,11 +29,10 @@ public class VendedorManager implements IntVendedorMgr {
     }
 
     public void Delete(Vendedor v) throws DaoException {
-        Vendedor tp = dao.SelectById(v);
-        try {
-            if (tp != null) {
+
+       try{
                 dao.Delete(v);
-            }
+
         } catch (Exception e) {
             throw new DaoException(e);
         }

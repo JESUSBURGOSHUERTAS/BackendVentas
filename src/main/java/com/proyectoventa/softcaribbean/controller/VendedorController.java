@@ -17,7 +17,7 @@ import java.util.List;
 public class VendedorController {
     @Autowired
     private IntVendedorFacade PF;
-    @PostMapping("vendedor/save")
+        @PostMapping("vendedor/save")
     public ResponseEntity<Message> Process(@RequestBody Vendedor v) throws ControllerException {
         Message message = new Message("0", "Succesfull Save", null);
         try {

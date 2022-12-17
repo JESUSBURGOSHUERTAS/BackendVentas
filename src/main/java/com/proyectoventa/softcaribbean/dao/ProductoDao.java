@@ -118,12 +118,14 @@ public class ProductoDao implements IntDao{
             statement.setString(1,p.getSku());
 
             resultSet = statement.executeQuery();
+
             while (resultSet.next()){
                 _result= new Productos();
                 _result.setSku(resultSet.getString("sku"));
                 _result.setDsproducto(resultSet.getString("dsproducto"));
 
             }
+            return _result;
         }catch (Exception E){
             throw new DaoException(E);
 
@@ -135,6 +137,6 @@ public class ProductoDao implements IntDao{
                 ex.printStackTrace();
             }
         }
-        return _result;
+
     }
 }

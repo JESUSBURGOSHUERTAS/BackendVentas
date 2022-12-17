@@ -22,10 +22,10 @@ public class VendedorDao implements IntVendedorDao{
         public void Insert(Vendedor v)throws DaoException {
             String INSERT = "INSERT INTO vendedor (nmvendedor, documento, dsnombres, desapellido, dsdireccion) VALUES (?,?,?,?,?)";
             PreparedStatement statement = null;
-            Connection connection = (Connection) ManagerConexion.getInstance().getConexion();
+            Connection connection = ManagerConexion.getInstance().getConexion().getCon();
             try {
                 statement=connection.prepareStatement(INSERT);
-                statement.setString(1,v.getNmvendedor());
+                statement.setInt(1,v.getNmvendedor());
                 statement.setString(2,v.getDocumento());
                 statement.setString(3,v.getDsnombres());
                 statement.setString(4,v.getDesapellidos());
@@ -55,11 +55,12 @@ public class VendedorDao implements IntVendedorDao{
             Connection connection=ManagerConexion.getInstance().getConexion().getCon();
             try {
                 statement=connection.prepareStatement(UPDATE);
-                statement.setString(1,v.getNmvendedor());
-                statement.setString(2,v.getDocumento());
-                statement.setString(3,v.getDsnombres());
-                statement.setString(4,v.getDesapellidos());
-                statement.setString(5,v.getDsdireccion());
+
+                statement.setString(1,v.getDocumento());
+                statement.setString(2,v.getDsnombres());
+                statement.setString(3,v.getDesapellidos());
+                statement.setString(4,v.getDsdireccion());
+                statement.setInt(5,v.getNmvendedor());
                 statement.executeUpdate();
             }catch (Exception E){
                 throw new DaoException(E);
@@ -78,7 +79,7 @@ public class VendedorDao implements IntVendedorDao{
             Connection connection=ManagerConexion.getInstance().getConexion().getCon();
             try {
                 statement = connection.prepareStatement(DELETE);
-                statement.setString(1, v.getNmvendedor());
+                statement.setInt(1, v.getNmvendedor());
                 statement.executeUpdate();
             } catch (Exception ex) {
                 throw new DaoException(ex);
@@ -92,12 +93,12 @@ public class VendedorDao implements IntVendedorDao{
         }
 
         public List<Vendedor> SelectAll()throws DaoException{
-
+            List<Vendedor> list= new ArrayList<>();
             String SQL = "SELECT * FROM vendedor";
             PreparedStatement statement = null;
             Vendedor v = null;
             ResultSet resultSet=null;
-            List<Vendedor> lista= new ArrayList<>();
+
             Connection connection=ManagerConexion.getInstance().getConexion().getCon();
 
             try {
@@ -107,40 +108,47 @@ public class VendedorDao implements IntVendedorDao{
 
                 while(resultSet.next()){
                     v = new Vendedor();
-                    v.setNmvendedor(resultSet.getString( "nmvendedor"));
+                    v.setNmvendedor(resultSet.getInt( "nmvendedor"));
                     v.setDocumento(resultSet.getString("documento"));
                     v.setDsnombres(resultSet.getString("dsnombres"));
                     v.setDesapellidos(resultSet.getString("desapellido"));
                     v.setDsdireccion(resultSet.getString("dsdireccion"));
-                    lista.add(v);
+                    list.add(v);
                 }
-                return lista;
+                return list;
             }catch (Exception e){
                 throw new DaoException(e);
             }
 
         }
         public Vendedor SelectById (Vendedor v) throws DaoException{
-            Vendedor _result=null;
-            String SELECT = "SELECT documento,dsnombres\n" +
-                    "FROM vendedor\n" +
-                    "WHERE nmvendedor=?";
+
+            String SELECT = "SELECT * FROM vendedor WHERE nmvendedor=?";
             PreparedStatement statement = null;
             ResultSet resultSet=null;
+            Vendedor _result=null;
             //Obtengo la conexión
             Connection connection=ManagerConexion.getInstance().getConexion().getCon();
-            System.out.println(connection);
+
             try {
                 statement = connection.prepareStatement(SELECT);
-                statement.setString(1,v.getNmvendedor());
+                statement.setInt(1,v.getNmvendedor());
 
                 resultSet = statement.executeQuery();
+
                 while (resultSet.next()){
-                    _result= new Vendedor();
+                    _result = new Vendedor();
+
                     _result.setDocumento(resultSet.getString("documento"));
                     _result.setDsnombres(resultSet.getString("dsnombres"));
+                    _result.setDesapellidos(resultSet.getString("desapellido"));
+                    _result.setDsdireccion(resultSet.getString("dsdireccion"));
+                    _result.setNmvendedor(resultSet.getInt("nmvendedor"));
+
 
                 }
+                return _result;
+
             }catch (Exception E){
                 throw new DaoException(E);
 
@@ -152,7 +160,7 @@ public class VendedorDao implements IntVendedorDao{
                     ex.printStackTrace();
                 }
             }
-            return _result;
+
         }
     }
 
