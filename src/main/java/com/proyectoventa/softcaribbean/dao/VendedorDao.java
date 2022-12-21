@@ -45,17 +45,16 @@ public class VendedorDao implements IntVendedorDao{
         }
         public void Update(Vendedor v)throws DaoException{
             String UPDATE = "UPDATE  vendedor\n" +
-                    "SET  documento=?\n" +
-                    "SET  dsnombres=?\n" +
-                    "SET  desapellido=?\n" +
-                    "SET  dsdireccion=?\n" +
+                    "SET  documento=?,\n" +
+                    "dsnombres=?,\n" +
+                    "desapellido=?,\n" +
+                    "dsdireccion=?\n" +
                     "WHERE nmvendedor=?";
             PreparedStatement statement = null;
             //Obtengo la conexión
             Connection connection=ManagerConexion.getInstance().getConexion().getCon();
             try {
                 statement=connection.prepareStatement(UPDATE);
-
                 statement.setString(1,v.getDocumento());
                 statement.setString(2,v.getDsnombres());
                 statement.setString(3,v.getDesapellidos());
